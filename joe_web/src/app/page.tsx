@@ -127,7 +127,7 @@ const SafeOilLanding: React.FC = () => {
       <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-8xl mx-auto px-6">
           <h2 className="text-5xl font-bold text-center mb-12 text-slate-800">
-            The Crisis We're Solving
+            The Crisis We&apos;re Solving
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1fr_2fr_1fr_1fr] gap-8 mb-12">
@@ -237,7 +237,7 @@ const SafeOilLanding: React.FC = () => {
           
           <p className="mt-8 text-lg opacity-90 max-w-2xl mx-auto">
             Our pilot program starts in urban markets across major cities. 
-            Download the app and be among the first to ensure your family's safety.
+            Download the app and be among the first to ensure your family&apos;s safety.
           </p>
         </div>
       </section>
