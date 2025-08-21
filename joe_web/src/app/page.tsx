@@ -1,91 +1,290 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { motion } from "framer-motion";
-import { CheckCircle, XCircle, Shield } from "lucide-react";
+"use client"
+import React, { useState, useEffect, useRef } from 'react';
 
-export default function LandingPage() {
+interface StatCardProps {
+  number: string;
+  label: string;
+  delay?: number;
+}
+
+interface FeatureCardProps {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+interface StepProps {
+  number: number;
+  title: string;
+  description: string;
+}
+
+const StatCard: React.FC<StatCardProps> = ({ number, label, delay = 0 }) => {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [delay]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-100 text-gray-800">
+    <div
+      ref={ref}
+      className={`bg-white p-8 rounded-3xl text-center shadow-xl hover:shadow-2xl transition-all duration-500 transform ${
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+      } hover:-translate-y-3 relative overflow-hidden group flex flex-col items-center justify-center`}
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+      <div className="text-5xl font-bold text-red-500 mb-4 text-center break-words">{number}</div>
+      <div className="text-lg text-gray-600 text-center">{label}</div>
+    </div>
+  );
+};
+
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description }) => {
+  return (
+    <div className="bg-white/10 backdrop-blur-lg p-10 rounded-3xl border border-white/20 hover:bg-white/15 transition-all duration-300 transform hover:-translate-y-2">
+      <div className="text-5xl mb-6 opacity-80">{icon}</div>
+      <h3 className="text-2xl font-semibold mb-4">{title}</h3>
+      <p className="opacity-90">{description}</p>
+    </div>
+  );
+};
+
+const Step: React.FC<StepProps> = ({ number, title, description }) => {
+  return (
+    <div className="text-center">
+      <div className="inline-block w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-full leading-[4rem] text-2xl font-bold mb-6">
+        {number}
+      </div>
+      <h3 className="text-xl font-semibold mb-4 text-slate-800">{title}</h3>
+      <p className="text-gray-600">{description}</p>
+    </div>
+  );
+};
+
+const SafeOilLanding: React.FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  const handleEmailSubmit = (): void => {
+    if (email && email.includes('@')) {
+      setIsSubmitted(true);
+      setEmail('');
+      setTimeout(() => setIsSubmitted(false), 3000);
+    } else {
+      alert('Please enter a valid email address.');
+    }
+  };
+
+  const scrollToSection = (elementId: string): void => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
-            Trust Your Cooking Oil – <span className="text-green-600">Verify in 2 Seconds</span>
-          </h1>
-          <p className="text-lg text-gray-600 mb-6">
-            Protect your family, business, and customers from food fraud with our blockchain-powered verification system.
-          </p>
-          <div className="flex gap-4">
-            <Button size="lg" className="rounded-2xl shadow-lg">Download App Prototype</Button>
-            <Button size="lg" variant="outline" className="rounded-2xl">Join Pilot Program</Button>
-          </div>
+      <section className="relative bg-gradient-to-br from-indigo-600 via-purple-700 to-indigo-800 text-white py-20 overflow-hidden">
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+          <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-4000"></div>
         </div>
-        {/* <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex justify-center"
-        >
-          <img src="https://i.imgur.com/gfByu6E.png" alt="QR Verification Demo" className="w-80 rounded-2xl shadow-lg" />
-        </motion.div> */}
+        
+        <div className="relative max-w-6xl mx-auto px-6 text-center">
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 animate-fade-in-down">
+            SafeOil
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 opacity-90 animate-fade-in-up">
+            Revolutionary blockchain-powered oil authentication system protecting consumers from adulterated cooking oil
+          </p>
+          <button
+            onClick={() => scrollToSection('signup')}
+            className="inline-block bg-red-500 hover:bg-red-600 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl animate-pulse"
+          >
+            Join the Safety Revolution
+          </button>
+        </div>
       </section>
 
       {/* Problem Section */}
-      <section className="bg-white py-16">
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-6">The Problem</h2>
-          <p className="text-gray-600 text-lg">
-            Tens of thousands of tons of unsafe oil have been sold as food. Consumers and businesses unknowingly use toxic oil, risking health and reputation.
-          </p>
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-8xl mx-auto px-6">
+          <h2 className="text-5xl font-bold text-center mb-12 text-slate-800">
+            The Crisis We're Solving
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1fr_2fr_1fr_1fr] gap-8 mb-12">
+            <StatCard number="10.000+" label="Tons of Adulterated Oil" delay={0} />
+            <StatCard number="8.200.000.000đ" label="in Illegal Revenue" delay={200} />
+            <StatCard number="Millions" label="Health Risks Created" delay={400} />
+            <StatCard number="Zero" label="Consumer Protection" delay={600} />
+          </div>
+          
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-xl text-gray-600 leading-relaxed">
+              Tens of thousands of tons of unrefined animal feed oil have been disguised as safe cooking oil, 
+              reaching collective kitchens, restaurants, and food processing facilities across Vietnam. 
+              The health consequences include liver damage, cardiovascular issues, and cancer risks.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Solution Section */}
-      <section className="py-16 max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center mb-10">Our Solution: Smart Certification</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <Card className="rounded-2xl shadow-md">
-            <CardContent className="p-6 text-center">
-              <Shield className="mx-auto mb-4 text-green-600" size={40} />
-              <h3 className="font-semibold text-xl mb-2">Blockchain Traceability</h3>
-              <p className="text-gray-600">Every oil batch recorded immutably – transparent and tamper-proof.</p>
-            </CardContent>
-          </Card>
-          <Card className="rounded-2xl shadow-md">
-            <CardContent className="p-6 text-center">
-              <CheckCircle className="mx-auto mb-4 text-green-600" size={40} />
-              <h3 className="font-semibold text-xl mb-2">Instant Verification</h3>
-              <p className="text-gray-600">Scan QR codes to confirm authenticity in real time.</p>
-            </CardContent>
-          </Card>
-          <Card className="rounded-2xl shadow-md">
-            <CardContent className="p-6 text-center">
-              <XCircle className="mx-auto mb-4 text-red-600" size={40} />
-              <h3 className="font-semibold text-xl mb-2">Fraud Alerts</h3>
-              <p className="text-gray-600">Detect and report counterfeit oil to regulators immediately.</p>
-            </CardContent>
-          </Card>
+      <section className="py-20 bg-slate-800 text-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-5xl font-bold text-center mb-16">Our Smart Solution</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <FeatureCard
+              icon="🔗"
+              title="Blockchain Traceability"
+              description="Every drop of oil tracked from source to shelf with immutable blockchain records"
+            />
+            <FeatureCard
+              icon="📱"
+              title="Instant Verification"
+              description="Scan QR codes with our mobile app for immediate authenticity verification"
+            />
+            <FeatureCard
+              icon="🤖"
+              title="AI Detection"
+              description="Advanced AI algorithms detect adulteration patterns and quality issues"
+            />
+            <FeatureCard
+              icon="👥"
+              title="Community Reports"
+              description="Crowdsourced safety reports from consumers and industry professionals"
+            />
+          </div>
         </div>
       </section>
 
-      {/* CTA Form */}
-      <section className="bg-green-600 text-white py-16">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-6">Join the Pilot Program</h2>
-          <p className="mb-6 text-lg">Be part of the first group to test our Smart Certification System and help stop food fraud.</p>
-          <form className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-            <Input placeholder="Your Name" className="rounded-xl" />
-            <Input placeholder="Email Address" className="rounded-xl" />
-            <Button className="rounded-xl bg-white text-green-700 hover:bg-gray-100">Sign Up</Button>
-          </form>
+      {/* How It Works */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-5xl font-bold text-center mb-16 text-slate-800">How It Works</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <Step
+              number={1}
+              title="Producer Registration"
+              description="Oil manufacturers register their products on our blockchain platform with complete supply chain data"
+            />
+            <Step
+              number={2}
+              title="QR Code Generation"
+              description="Each oil container receives a unique QR code linked to its blockchain record"
+            />
+            <Step
+              number={3}
+              title="Consumer Verification"
+              description="Customers scan the QR code to instantly verify authenticity and safety"
+            />
+            <Step
+              number={4}
+              title="AI Monitoring"
+              description="Continuous AI analysis detects anomalies and potential adulteration cases"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* MVP Demo */}
+      <section className="py-20 bg-gradient-to-br from-indigo-600 to-purple-700 text-white text-center">
+        <div className="max-w-4xl mx-auto px-6">
+          <h2 className="text-5xl font-bold mb-6">Experience SafeOil</h2>
+          <p className="text-xl mb-12 opacity-90">See how our app protects you and your family</p>
+          
+          <div className="max-w-sm mx-auto bg-gray-900 rounded-3xl p-6 shadow-2xl">
+            <div className="bg-white rounded-2xl p-8 text-gray-800 min-h-[500px] flex flex-col items-center justify-center">
+              <h3 className="text-2xl font-bold mb-6 text-slate-800">SafeOil Scanner</h3>
+              
+              <div className="w-32 h-32 bg-gray-800 rounded-xl mb-6 flex items-center justify-center text-white text-sm">
+                QR Scanner View
+              </div>
+              
+              <div className="w-full space-y-4">
+                <div className="bg-green-500 text-white p-3 rounded-xl font-semibold">
+                  ✅ Verified Safe
+                </div>
+                <div className="text-left space-y-1 text-sm text-gray-600">
+                  <div><strong>Brand:</strong> Premium Oil Co.</div>
+                  <div><strong>Origin:</strong> An Giang Province</div>
+                  <div><strong>Production:</strong> 15/08/2025</div>
+                  <div><strong>Certifications:</strong> ISO 22000, HACCP</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <p className="mt-8 text-lg opacity-90 max-w-2xl mx-auto">
+            Our pilot program starts in urban markets across major cities. 
+            Download the app and be among the first to ensure your family's safety.
+          </p>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section id="signup" className="py-20 bg-red-500 text-white text-center">
+        <div className="max-w-4xl mx-auto px-6">
+          <h2 className="text-5xl font-bold mb-6">Ready to Make a Difference?</h2>
+          <p className="text-xl mb-8">Join thousands of consumers taking control of their food safety</p>
+          
+          <div className="max-w-lg mx-auto flex flex-col md:flex-row gap-4">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex-1 px-6 py-4 rounded-full text-gray-800 text-lg focus:outline-none focus:ring-4 focus:ring-white/50"
+              placeholder="Enter your email address"
+              onKeyPress={(e) => e.key === 'Enter' && handleEmailSubmit()}
+            />
+            <button
+              onClick={handleEmailSubmit}
+              className="bg-slate-800 hover:bg-slate-900 px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:-translate-y-1"
+            >
+              {isSubmitted ? '✓ Submitted!' : 'Get Early Access'}
+            </button>
+          </div>
+          
+          <p className="mt-8 opacity-90">
+            Be notified when the SafeOil app launches in your area. 
+            Together, we can eliminate food fraud and protect public health.
+          </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 text-center text-gray-500 text-sm">
-        © 2025 Smart Certification System · Aligned with UN SDG 3 & 12
+      <footer className="bg-slate-800 text-white py-12 text-center">
+        <div className="max-w-4xl mx-auto px-6">
+          <p className="text-lg mb-3">
+            © 2025 SafeOil - Smart Certification System. Protecting consumers through blockchain technology.
+          </p>
+          <p className="opacity-80">
+            Contact: info@safeoil.vn | +84 123 456 789
+          </p>
+        </div>
       </footer>
     </div>
   );
-}
+};
+
+export default SafeOilLanding;
