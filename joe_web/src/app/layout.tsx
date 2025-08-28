@@ -13,8 +13,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SafeOil by Ofood - Blockchain Oil Authentication",
-  description: "Revolutionary blockchain-powered oil authentication system by Ofood. Protect your family from adulterated cooking oil with instant QR verification.",
+  title: "SafeOil by Ofood",
+  description:
+    "Revolutionary blockchain-powered oil authentication system by Ofood. Protect your family from adulterated cooking oil with instant QR verification.",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 export default function RootLayout({

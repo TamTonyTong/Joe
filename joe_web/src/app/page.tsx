@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import logo from "../assets/logo.png";
-
+import Image from "next/image";
 interface StatCardProps {
   number: string;
   label: string;
@@ -126,7 +126,7 @@ const SafeOilLanding: React.FC = () => {
           <div className="flex items-center justify-center gap-4 mb-8">
             <div className="relative">
               <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-transform duration-300">
-                <img src={logo.src} alt="Ofood Logo" className="w-14 h-14" />
+                <Image src={logo} alt="Ofood Logo" className="w-14 h-14" />
               </div>
               <div className="absolute -inset-1 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full -z-10 animate-pulse"></div>
             </div>
@@ -343,7 +343,7 @@ const SafeOilLanding: React.FC = () => {
           <div className="text-center mb-6">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-                <img src={logo.src} alt="Ofood Logo" className="w-11 h-11" />
+                <Image src={logo} alt="Ofood Logo" className="w-11 h-11" />
               </div>
               <span className="text-lg font-semibold opacity-90">
                 Powered by Ofood
@@ -362,8 +362,8 @@ const SafeOilLanding: React.FC = () => {
               <div className="text-center mb-6">
                 <div className="flex items-center justify-center gap-2 mb-3">
                   <div className="w-15 h-15 bg-white rounded-full flex items-center justify-center">
-                    <img
-                      src={logo.src}
+                    <Image
+                      src={logo}
                       alt="Ofood Logo"
                       className="w-14 h-14"
                     />
@@ -638,7 +638,7 @@ const SafeOilLanding: React.FC = () => {
 
             {/* Pilot Program Benefits */}
             <div className="space-y-6">
-              <h3 className="text-3xl font-bold">What You'll Get</h3>
+              <h3 className="text-3xl font-bold">What You&apos;ll Get</h3>
 
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
@@ -733,7 +733,7 @@ const SafeOilLanding: React.FC = () => {
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-4 mb-6">
               <div className="w-25 h-25 bg-white rounded-full flex items-center justify-center">
-                <img src={logo.src} alt="Ofood Logo" className="w-19 h-19" />
+                <Image src={logo} alt="Ofood Logo" className="w-19 h-19" />
               </div>
               <div>
                 <h2 className="text-4xl font-bold text-slate-800">
@@ -777,14 +777,14 @@ const SafeOilLanding: React.FC = () => {
               </h3>
               <p className="text-gray-600">
                 Committed to eliminating food fraud globally, starting with
-                Southeast Asia's cooking oil supply chain.
+                Southeast Asia&apos;s cooking oil supply chain.
               </p>
             </div>
           </div>
 
           <div className="text-center mt-12">
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              SafeOil is Ofood's flagship product in the fight against food
+              SafeOil is Ofood&apos;s flagship product in the fight against food
               fraud. We leverage advanced blockchain technology and AI to create
               transparent, trustworthy food supply chains that protect consumers
               and honest businesses.
@@ -798,7 +798,7 @@ const SafeOilLanding: React.FC = () => {
         <div className="max-w-4xl mx-auto px-6">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center">
-              <img src={logo.src} alt="Ofood Logo" className="w-10 h-10" />
+              <Image src={logo} alt="Ofood Logo" className="w-10 h-10" />
             </div>
             <span className="text-2xl font-semibold">Ofood</span>
           </div>
